@@ -1,0 +1,299 @@
+    <li>
+      <div class="collapsible-header"><i class="material-icons">info_outline</i>Basics</div>
+      <div class="collapsible-body" style='text-align:center'>
+        <div class="label col s12 textcenter" style="text-align:center;margin-bottom:-30px">Image Dimensions</div>
+        <div class="label col s12 textcenter imageDimensions" style="text-align:center;">X</div>
+        <a style="" href="javascript:downloadOrig()" class="waves-effect waves-light btn blue"><i class="material-icons left">arrow_downward</i>Download Original</a>
+        <a style="" href="javascript:cropAndRotate()" class="waves-effect waves-light btn blue"><i class="material-icons left">crop_rotate</i>Crop and Rotate</a>
+      </div>
+    </li>
+    <li>
+      <div class="collapsible-header"><i class="material-icons">crop</i>Dimensions</div>
+      <div class="collapsible-body" style='text-align:center'>
+                    <select class="theSelect selectInput" onchange="selectChanged(event)">
+                          <option value="custom">Custom (width x height)</option>
+                        <optgroup id="saved" label="Saved">
+                          <option value="1000x700">700x1000</option></optgroup>
+                        </optgroup>
+
+                        <optgroup label="Misc">
+                            <option value="300x300"> 300px square </option>
+                            <option value="16x16"> 16px (favicon) </option>
+                        </optgroup>
+
+                        <optgroup label="iOS Icons">
+                            <option value="29x29"> 29px </option>
+                            <option value="40x40"> 40px </option>
+                            <option value="50x50"> 50px </option>
+                            <option value="57x57"> 57px </option>
+                            <option value="58x58"> 58px </option>
+                            <option value="72x72"> 72px </option>
+                            <option value="76x76"> 76px </option>
+                            <option value="80x80"> 80px </option>
+                            <option value="87x87"> 87px </option>
+                            <option value="100x100"> 100px </option>
+                            <option value="114x114"> 114px </option>
+                            <option value="120x120"> 120px </option>
+                            <option value="144x144"> 144px </option>
+                            <option value="152x152"> 152px </option>
+                            <option value="180x180"> 180px </option>
+                            <option value="512x512"> 512px </option>
+                            <option value="1024x1024"> 1024px </option>
+                        </optgroup>
+
+                        <optgroup label="iOS Splash">
+
+                            <option value="320x480">320x480px (iPod Non-Retina (1x) Portrait)</option>
+                            <option value="480x320">480x320px (iPod Non-Retina (1x) Landscape)</option>
+
+                            <option value="640x960">640x960px (iPod Retina (2x) Portrait)</option>
+                            <option value="960x640">960x640px (iPod Retina (2x) Landscape)</option>
+
+                            <option value="640x1136">640x1136px (iPhone 5 Retina (2x) Portrait)</option>
+                            <option value="1136x640">1136x640px (iPhone 5 Retina (2x) Landscape)</option>
+
+                            <option value="750x1334">750x1334px (iPhone 6 (2x) Portrait) </option>
+                            <option value="1334x750">1334x750px (iPhone 6 (2x) Landscape)</option>
+
+                            <option value="1242x2208">1242x2208px (iPhone 6 Plus(3x) Portrait)</option>
+                            <option value="2208x1242">2208x1242px (iPhone 6 Plus(3x) Landscape)</option>
+
+                            <option value="768x1024">768x1024px (iPad Non-Retina 1x Portrait) </option>
+                            <option value="1024x768">1024x768px (iPad Non-Retina 1x Landscape) </option>
+
+                            <option value="1536x2048">1536x2048px (iPad Retina (2x) Portrait) </option>
+                            <option value="2048x1536">2048x1536px (iPad Retina (2x) Landscape) </option>
+                        </optgroup>
+
+                        <optgroup label="Android Icons">
+                            <option value="36x36"> 36px </option>
+                            <option value="48x48"> 48px </option>
+                            <option value="72x72"> 72px </option>
+                            <option value="96x96"> 96px </option>
+                            <option value="144x144"> 144px </option>
+                            <option value="192x192"> 192px </option>
+                            <option value="512x512"> 512px </option>
+                        </optgroup>
+
+                        <optgroup label="AndroidSplash">
+                            <option value="200x320">200x320px (LDPI Portrait) </option>
+                            <option value="320x200">320x200px (LDPI Landscape) </option>
+
+                            <option value="320x480">320x480px (MDPI Portrait)</option>
+                            <option value="480x320">480x320px (MDPI Landscape)</option>
+
+                            <option value="480x800">480x800px (HDPI Portrait)</option>
+                            <option value="800x480">800x480px (HDPI Landscape)</option>
+
+                            <option value="960px1600">960px1600px (XXHDPI Portrait)</option>
+                            <option value="1600x960">1600x960px (XXHDPI Landscape)</option>
+
+                            <option value="1280px1920">1280px1920px (XXXHDPI Portrait)</option>
+                            <option value="1920x1280">1920x1280px (XXXHDPI Landscape)</option>
+
+                        </optgroup>
+                    </select>
+          <div style='margin-top:40px;' class='customOptions row'>
+            <div class="label col s6"> Width </div>
+            <div class="input-field col s6 halfinput">
+              <input type="number" min="1" max="5000" class="form-control text-center inp100 customX" value="100" id=""  step='.1' onchange="imageDataChange(event)">
+              <i style='margin-top:-10px; font-size:15px' class="prefix">px</i>
+            </div>
+            <div class="label col s6"> Height </div>
+            <div class="input-field col s6 halfinput">
+              <input type="number" min="1" max="5000" class="form-control text-center inp100 customY" value="100" id="" onchange="imageDataChange(event)" step='.1'>
+              <i style='margin-top:-10px; font-size:15px' class="prefix">px</i>
+            </div>
+            <a style='' href="javascript:saveDimensions()" class="waves-effect waves-light btn blue"><i class="material-icons left">save</i>Save Dimensions</a>
+          </div>
+      </div>
+    </li>
+    <li>
+      <div class="collapsible-header"><i class="material-icons">aspect_ratio</i>Position</div>
+      <div class="collapsible-body" style='text-align:center'>
+        <div class="row">
+            <div class="label col s6"> Image Zoom </div>
+            <div class="input-field col s6 halfinput">
+              <input type="number" step=".1" min=".1" max="300" class="form-control text-center inp100 zoom" value="100" id="" onchange="imageDataChange(event)" oninput='updateValueI(event)'>
+              <i class="material-icons prefix">%</i>
+            </div>
+            <input id="" class="zoomSlider" value="100" type="range" min="0.0" max="500" step=".1" oninput ="updateValueS(event)" onchange="imageDataChange(event)">
+        </div><br>
+
+        <div class="row">
+            <div class="label col s6"> Image Offset X</div>
+            <div class="input-field col s6 halfinput">
+              <input id="" class="inp100 ioX" value="50" type="number" min="0.0" max="100" onchange="imageDataChange(event)"  step=".1" oninput ="updateValueI(event)"> 
+              <i class="material-icons prefix">%</i>
+            </div>
+            <input id="" class="ioXSlider" value="50" type="range" min="0.0" max="100" onchange="imageDataChange(event)"  step=".1" oninput ="updateValueS(event)">
+        </div><br>
+
+        <div class="row">
+            <div class="label col s6"> Image Offset Y</div>
+            <div class="input-field col s6 halfinput">
+              <input id="" class="inp100 ioY" value="50" type="number" min="0.0" max="100" step="0.1" onchange="imageDataChange(event)" step=".1" oninput ="updateValueI(event)"> 
+              <i class="material-icons prefix">%</i>
+            </div>
+            <input id="" class="ioYSlider" value="50" type="range" min="0.0" max="100" step="1" onchange="imageDataChange(event)" step=".1" oninput ="updateValueS(event)">
+        </div>
+        <a style='' href="javascript:resetValues()" class="waves-effect waves-light btn blue"><i class="material-icons left">cached</i>Reset to Defaults</a>
+      </div>
+    </li>
+
+    <li>
+      <div class="collapsible-header"><i class="material-icons">all_out</i>Background</div>
+      <div style='text-align:center' class="collapsible-body">
+        <div class="row">
+            <div class="label col s12 textcenter" style='margin-bottom:-30px;text-align:center;'> Color</div>
+            <div class="input-field col s12">
+              <input type="text" class='specColor' id="bgColor" >
+            </div>
+            <div class="label col s6"> Gradient</div>
+            <div class="input-field col s6 halfinput">
+                 <div class="switch">
+            <label>
+                Off
+                <input type="checkbox" onchange='gradCheckChanged(event)' id="gradCheck">
+      <span class="lever"></span>
+            On
+          </label>
+              </div>
+            </div>
+
+            <div class='gradOptions' style="display:none" id=''>
+            <div class="label col s6"> Type </div>
+            <div class="input-field col s6 halfinput">
+                    <select style='font-size:20px;' id="gradType" class="selectInput" style="" onchange="imageDataChange(event)">
+                        <!-- <option value="0"> Radial </option> -->
+                        <option value="1"> Vertical </option>
+                        <option value="2"> Horizontal </option>
+                    </select>
+                  </div>
+            <div class="label col s12 textcenter" style='margin-bottom:-30px;text-align:center;'>+1 Color</div>
+            <div style="margin-bottom:30px" class="input-field col s12">
+              <input type="text" class='specColor'  id="bgColor2" >
+            </div>
+          <div class='row'>        
+            <div class="label col s6"> Stop X </div>
+            <div class="input-field col s6 halfinput">
+              <input type="number" min=".1" max="100" class="form-control text-center inp100 goX" value="50" id="" onchange="imageDataChange(event)" step='.1' oninput ="updateValueI(event)">
+              <i class="material-icons prefix">%</i>
+            </div>
+            <input style="margin-bottom:40px" id="" class="goXSlider" value="50" type="range" min="0.0" max="100" step="1" onchange="imageDataChange(event)" oninput ="updateValueS(event)">
+
+          </div>
+          <div class='row'>        
+            <div class="label col s6"> Stop Y </div>
+            <div class="input-field col s6 halfinput">
+              <input type="number" min=".1" max="100" class="form-control text-center inp100 goY" value="50" id="" onchange="imageDataChange(event)" step='.1' oninput ="updateValueI(event)">
+              <i class="material-icons prefix">%</i>
+            </div>
+            <input id="" class="goYSlider" value="50" type="range" min="0.0" max="100" step=".1" onchange="imageDataChange(event)" oninput ="updateValueS(event)">
+          </div>
+      </div>
+        <a style='' href="javascript:resetValues()" class="waves-effect waves-light btn blue"><i class="material-icons left">cached</i>Reset to Defaults</a>
+    </li>
+    <li>
+      <div class="collapsible-header"><i class="material-icons">compare</i>Filters</div>
+      <div class="collapsible-body row">
+        <div class="selectWrapper">
+                    <select id="" class="theFSelect selectInput" onchange="fselectChanged(event)">
+                            <option value="none"> No Filter </option>
+                            <option value="custom"> Custom </option>
+                        <optgroup label="Presets">
+                            <option value="1977"> 1977 </option>
+                        </optgroup>
+                    </select>
+        </div>
+     <div class='filtersWrapper' style='display:none;margin-top: 40px'>
+    <div class='row'>
+        <div class="label col s6"> Brightness </div>
+        <div class="input-field col s6 halfinput">
+            <input type="number" min="0" max="500" class="form-control text-center inp100 brightness" value="100" id="" onchange="imageDataChange(event)" step='.1' oninput="updateValueI(event)"> 
+            <i class="material-icons prefix">%</i>
+        </div>
+        <input style="margin-bottom:40px" id="" class="brightnessSlider" value="100" type="range" min="0.0" max="500" step=".1" onchange="imageDataChange(event)" oninput="updateValueS(event)">
+    </div>
+
+    <div class='row'>
+        <div class="label col s6"> Contrast </div>
+        <div class="input-field col s6 halfinput">
+            <input type="number" min="0" max="500" class="form-control text-center inp100 contrast" value="100" id="" onchange="imageDataChange(event)" oninput="updateValueI(event)" step='.1'>
+            <i class="material-icons prefix">%</i>
+        </div>
+        <input style="margin-bottom:40px" id="" class="contrastSlider" value="100" type="range" min="0.0" max="500" step=".1" onchange="imageDataChange(event)" oninput="updateValueS(event)">
+    </div>
+    
+    <div class='row'>
+        <div class="label col s6"> Saturate </div>
+        <div class="input-field col s6 halfinput">
+            <input type="number" min="0" max="500" class="form-control text-center inp100 saturate" value="100" id="" onchange="imageDataChange(event)" step='.1' oninput="updateValueI(event)">
+            <i class="material-icons prefix">%</i>
+        </div>
+        <input style="margin-bottom:40px" id="" class="saturateSlider" value="100" type="range" min="0.0" max="500" step=".1" onchange="imageDataChange(event)" oninput="updateValueS(event)">
+    </div>
+
+    <div class='row'>
+        <div class="label col s6"> Hue Rotate</div>
+        <div class="input-field col s6 halfinput">
+            <input type="number" min="0" max="360" class="form-control text-center inp100 hueRotate" value="0" id="" onchange="imageDataChange(event)" step='.1' oninput="updateValueI(event)">
+            <i class="material-icons prefix">%</i>
+        </div>
+        <input style="margin-bottom:40px" id="" class="hueRotateSlider" value="0" type="range" min="0.0" max="360" step=".1" onchange="imageDataChange(event)" oninput="updateValueS(event)">
+    </div>
+
+    <div class='row'>
+        <div class="label col s6"> Blur</div>
+        <div class="input-field col s6 halfinput">
+            <input type="number" min="0" max="10" class="form-control text-center inp100 blur" value="0" id="" onchange="imageDataChange(event)" step='.1' oninput="updateValueI(event)">
+            <i class="material-icons prefix">%</i>
+        </div>
+        <input style="margin-bottom:40px" id="" class="blurSlider" value="0" type="range" min="0" max="10" step=".1" onchange="imageDataChange(event)" oninput="updateValueS(event)">
+    </div>
+
+    <div class='row'>
+        <div class="label col s6"> Invert </div>
+        <div class="input-field col s6 halfinput">
+            <input type="number" min="0" max="100" class="form-control text-center inp100 invert" value="0" id="" onchange="imageDataChange(event)" step='.1' oninput="updateValueI(event)">
+            <i class="material-icons prefix">%</i>
+        </div>
+        <input style="margin-bottom:40px" id="" class="invertSlider" value="0" type="range" min="0.0" max="100" step=".1" onchange="imageDataChange(event)" oninput="updateValueS(event)">
+    </div>
+
+    <div class='row'>
+        <div class="label col s6"> Sepia</div>
+        <div class="input-field col s6 halfinput">
+            <input type="number" min="0" max="100" class="form-control text-center inp100 sepia" value="0" id="" onchange="imageDataChange(event)" step='.1' oninput="updateValueI(event)">
+            <i class="material-icons prefix">%</i>
+        </div>
+        <input style="margin-bottom:40px" id="" class="sepiaSlider" value="0" type="range" min="0.0" max="100" step=".1" onchange="imageDataChange(event)" oninput="updateValueS(event)">
+    </div>
+
+    <div class='row'>
+        <div class="label col s6"> Grayscale </div>
+        <div class="input-field col s6 halfinput">
+            <input type="number" min="0" max="100" class="form-control text-center inp100 grayscale" value="0" id="" onchange="imageDataChange(event)" step='.1' oninput="updateValueI(event)">
+            <i class="material-icons prefix">%</i>
+        </div>
+        <input style="margin-bottom:40px" id="" class="grayscaleSlider" value="0" type="range" min="0.0" max="100" step=".1" onchange="imageDataChange(event)" oninput="updateValueS(event)">
+    </div>
+
+    </div>
+
+      </div>
+    </li>
+    <li>
+      <div class="collapsible-header"><i class="material-icons">file_download</i>Download/base64</div>
+      <div class="collapsible-body" style='text-align:center'>
+        <a style='margin-bottom:30px;' class="waves-effect waves-light btn red"><i class="material-icons left">cloud_download</i>Current Image</a>
+
+            <div class="label col s12 textcenter" style='margin-bottom:-10px;text-align:center;'> BASE64</div>
+              <textarea readonly=true onclick='base64DW(event)' class='ccpta base64Clip' id=''> </textarea>
+        <a style='margin-bottom:30px;display:none' class="waves-effect waves-light btn blue"><i class="material-icons left">content_copy</i>Copy Base64</a>
+            <div class="label col s12 textcenter" style='margin-bottom:-10px;text-align:center;'> CSS </div>
+              <textarea readonly=true onclick='cssDW(event)' class='ccpta cssClip' id=''> </textarea>
+        <a style='display:none' class="waves-effect waves-light btn blue"><i class="material-icons left">content_copy</i>Copy CSS</a>
+      </div>
+    </li>
+    <div class='watermark'> </div>

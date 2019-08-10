@@ -1,0 +1,22 @@
+{
+  "none": {
+    brightness:100,
+    saturate:100,
+    hueRotate:0,
+    contrast:100,
+    blur:0,
+    invert:0,
+    sepia:0,
+    grayscale:0
+  },
+  "1977": {
+    brightness:110,
+    saturate:130,
+    hueRotate:0,
+    contrast:110,
+    blur:0,
+    invert:0,
+    sepia:0,
+    grayscale:0
+  }
+}
