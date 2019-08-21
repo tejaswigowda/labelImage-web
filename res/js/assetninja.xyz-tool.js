@@ -10,16 +10,99 @@ var start = function()
   loadImage();
 }
 
-var inst;
+var inst, canvas;
+var rect, isDown, origX, origY;
 function loadImage()
 {
     var url = window.location.hash.replace("#","");
     convertImgToDataURLviaCanvas(url, function(data){
      // document.getElementById("imagePreview").onload = __start;
-      document.getElementById("imagePreview").src = data;
-      //setTimeout("__start()", 300);
+ //     document.getElementById("imagePreview").src = data;
+       var c = document.getElementById("imageC");
+       var ctx = c.getContext("2d");
+       
+       var img = new Image();
+            img.onload = function(){
+            // c.width = img.width;
+            // c.height = img.height;
+
+
+             canvas = new fabric.Canvas('imageC', { selection: true, hasControls:true, width:img.width, height:img.height});
+             fabric.Image.fromURL(data, function(oImg) {
+              canvas.add(oImg);
+              oImg.set('selectable', false);
+              oImg.set('hasBorders', false);
+              oImg.set('hasControls', false);
+              oImg.set('lockMovementX', true);
+              });
+
+
+            canvas.on('mouse:wheel', function(opt) {
+
+              if(!opt.e.shiftKey) return;
+                
+              var delta = opt.e.deltaY;
+              var zoom = canvas.getZoom();
+              zoom = zoom + delta/200;
+              if (zoom > 20) zoom = 20;
+              if (zoom < 0.01) zoom = 0.01;
+              canvas.setZoom(zoom);
+              opt.e.preventDefault();
+              opt.e.stopPropagation();
+            });
+
+            canvas.on('mouse:down', function(o){
+              if(canvas.getActiveObject() != null || canvas.getActiveObject() != undefined) return;
+                isDown = true;
+                var pointer = canvas.getPointer(o.e);
+                origX = pointer.x;
+                origY = pointer.y;
+                var pointer = canvas.getPointer(o.e);
+                rect = new fabric.Rect({
+                    left: origX,
+                    top: origY,
+                   // originX: 'left',
+                  //  originY: 'top',
+                    width: pointer.x-origX,
+                    height: pointer.y-origY,
+                    angle: 0,
+                    stroke: 'rgba(0,255,0,0.5)',
+                    strokeWidth: 3,
+                    fill: 'rgba(255,0,0,0.1)',
+                    transparentCorners:true 
+                });
+                canvas.add(rect);
+            });
+
+            canvas.on('mouse:move', function(o){
+                if (!isDown) return;
+              if(canvas.getActiveObject() != null || canvas.getActiveObject() != undefined) return;
+                var pointer = canvas.getPointer(o.e);
+
+                if(origX>pointer.x){
+                    rect.set({ left: Math.abs(pointer.x) });
+                }
+                if(origY>pointer.y){
+                    rect.set({ top: Math.abs(pointer.y) });
+                }
+
+                rect.set({ width: Math.abs(origX - pointer.x) });
+                rect.set({ height: Math.abs(origY - pointer.y) });
+
+
+                canvas.renderAll();
+            });
+
+            canvas.on('mouse:up', function(o){
+              isDown = false;
+            });
+
+        }
+        img.src = data;
+
       activityIndicator.hide();
-      /*inst = panzoom(document.getElementById("imagePreview"), {
+      /*
+      inst = panzoom(document.getElementById("imagePreview"), {
           maxZoom: 10,
           minZoom: 0.1,
           smoothScroll: true,
@@ -29,7 +112,8 @@ function loadImage()
             var shouldIgnore = !e.shiftKey;
             return shouldIgnore;
           }
-        });*/
+        });
+       */
     });
 }
 
