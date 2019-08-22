@@ -66,8 +66,9 @@ function loadImage()
                   width: pointer.x-origX,
                   height: pointer.y-origY,
                   angle: 0,
-                  fill: 'rgba(255,0,0,0.5)',
-                  transparentCorners: false
+                  fill: 'rgba(255,0,0,0.2)',
+                  transparentCorners: false,
+                  hasRotatingPoint: false
               });
               canvas.add(rect);
           });
