@@ -36,6 +36,7 @@ function loadImage()
               oImg.set('lockMovementX', true);
               });
 
+  
 
             canvas.on('mouse:wheel', function(opt) {
 
@@ -77,6 +78,7 @@ function loadImage()
               if (!isDown) return;
               var pointer = canvas.getPointer(o.e);
 
+//$("#imageC .upper-canvas").css({cursor:"pointer"});
               if(origX>pointer.x){
                   rect.set({ left: Math.abs(pointer.x) });
               }
