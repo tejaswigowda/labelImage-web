@@ -44,8 +44,8 @@ function loadImage()
               var delta = opt.e.deltaY;
               var zoom = canvas.getZoom();
               zoom = zoom + delta/200;
-              if (zoom > 20) zoom = 20;
-              if (zoom < 0.01) zoom = 0.01;
+              if (zoom > 2) zoom = 2;
+              if (zoom < 0.05) zoom = 0.05;
               canvas.setZoom(zoom);
               opt.e.preventDefault();
               opt.e.stopPropagation();
@@ -66,9 +66,11 @@ function loadImage()
                     width: pointer.x-origX,
                     height: pointer.y-origY,
                     angle: 0,
-                    stroke: 'rgba(0,255,0,0.5)',
+                    stroke: 'rgba(0,0,255,1)',
                     strokeWidth: 3,
                     fill: 'rgba(255,0,0,0.1)',
+                    selectable: true,
+                    evented: true,
                     transparentCorners:true 
                 });
                 canvas.add(rect);
