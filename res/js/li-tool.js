@@ -81,8 +81,9 @@ function loadImage()
 
   canvas.on('object:scaling', function (e) {
         var obj = e.target;
+        var zoom = canvas.getZoom();
          // if object is too big ignore
-        if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
+        if(obj.currentHeight > obj.canvas.height*zoom || obj.currentWidth > obj.canvas.width*zoom){
             return;
         }
         obj.setCoords();
@@ -92,11 +93,25 @@ function loadImage()
             obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect().left);
         }
         // bot-right corner
-        if(obj.getBoundingRect().top+obj.getBoundingRect().height  > obj.canvas.height || obj.getBoundingRect().left+obj.getBoundingRect().width  > obj.canvas.width){
-            obj.top = Math.min(obj.top, obj.canvas.height-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top);
-            obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left);
+        if(obj.getBoundingRect().top+obj.getBoundingRect().height  > obj.canvas.height*zoom || obj.getBoundingRect().left+obj.getBoundingRect().width  > obj.canvas.width*zoom){
+            obj.top = Math.min(obj.top, obj.canvas.height*zoom-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top);
+            obj.left = Math.min(obj.left, obj.canvas.width*zoom-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left);
         }
 });
+
+canvas.on('selection:created', function (e) {
+  const activeSelection = e.target
+  activeSelection.set({hasRotatingPoint: false})
+})
+
+// fired e.g. when you select one object first,
+// then add another via shift+click
+canvas.on('selection:updated', function (e) {
+  const activeSelection = e.target
+  if (activeSelection.hasRotatingPoint) {
+    activeSelection.set({hasRotatingPoint: false})
+  }
+})
 
             canvas.on('mouse:wheel', function(opt) {
 
@@ -158,7 +173,13 @@ function loadImage()
 
           canvas.on('mouse:up', function(o){
               if (isDown) {
-                rect.setCoords();
+                var pointer = canvas.getPointer(o.e);
+                if((pointer.x-origX) * (pointer.y-origY) < 200){
+                  canvas.remove(rect);
+                }
+                else{
+                  rect.setCoords();
+                }
                 isDown = false;
               }
           });
