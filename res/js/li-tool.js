@@ -4,6 +4,18 @@ var start = function()
   $('.sidenav').sidenav({edge:'right',draggable: false});
   loadInsp();
   loadImage();
+  window.addEventListener('keydown', function (e) {
+    var kp = e.ctrlKey || e.keyCode;
+    if(kp == 8 || kp == 46){
+      canvas.remove(canvas.getActiveObject());
+      refreshBoxData();
+    }
+  });
+
+  $(".menuMarkup").focusin(function(){
+     canvas.discardActiveObject();
+     canvas.requestRenderAll();
+  });
 }
 
 var theImage = {};
@@ -345,14 +357,14 @@ function setBoxHTML()
   var objs = canvas.getObjects();
   var markup = "";
   if(objs.length == 0){
-    document.getElementById("boxesList").innerHTML = "<h1>No boxes yet</h1>";
+    document.getElementById("boxesList").innerHTML = "<h4>No boxes yet</h4>";
    return; 
   }
   for(var i = 0; i < objs.length; i++){
     var o = objs[i];
     
-    var cn = "box" + new Date().getTime();
-    markup += "<div id='aBox' data-id='"+i+"'>"+
+    var cn = "box" + i + new Date().getTime();
+    markup += "<div id='aBox' class='"+ cn +"' data-cn='"+ cn +"' data-id='"+i+"'>"+
     "<input class='name' onchange='updateName(event)'>" +
     "<input class='label' onchange='updateLabel(event)'>"+
     "<button onclick='deleteBox(event)'>Delete</button>"+
@@ -371,21 +383,20 @@ function refreshBoxData()
   $(".ccpta.base64Clip").val(getXMLAnnots())
   $(".ccpta.cssClip").val(JSON.stringify(getJSONAnnots()));
   setBoxHTML();
+  $(".collapsible").collapsible("open", 1);
 }
 
 function deleteBox(e)
 {
   var boxid = e.target.parentElement.dataset.id;
-  console.log(boxid)
+  var cn = e.target.parentElement.dataset.cn;
+
   canvas.remove(canvas.getObjects()[boxid])
- /* $(".ccpta.base64Clip").val(getXMLAnnots())
+  $(".ccpta.base64Clip").val(getXMLAnnots())
   $(".ccpta.cssClip").val(JSON.stringify(getJSONAnnots()));
-  $(e.target.parentElement).remove();
- */
-  refreshBoxData();
+  $("#boxesList ." + cn).remove();
+  if (canvas.getObjects().length == 0) refreshBoxData();
 }
 
-document.getElementById("canvas-container").tabIndex = 1000;
-document.getElementById("canvas-container").addEventListener("keydown", function(e){
-  console.log(e.keyCode)
-}, false);
+//document.getElementById("imageWrapper").tabIndex = 1000;
+
