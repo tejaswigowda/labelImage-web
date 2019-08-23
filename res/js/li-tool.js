@@ -135,6 +135,7 @@ function loadImage()
               rect.set({ height: Math.abs(origY - pointer.y) });
 
               canvas.renderAll();
+              refreshBoxData();
           });
 
           canvas.on('mouse:up', function(o){
@@ -143,6 +144,7 @@ function loadImage()
                 isDown = false;
               }
           });
+          refreshBoxData();
         }
         img.src = data;
 
@@ -296,3 +298,53 @@ function getXMLAnnots()
   var jsonObj = getJSONAnnots();
   return  x2js.json2xml_str( jsonObj );
 }
+
+
+
+function setBoxHTML()
+{
+  var objs = canvas.getObjects();
+  var markup = "";
+  if(objs.length == 0){
+    document.getElementById("boxesList").innerHTML = "<h1>No boxes yet</h1>";
+   return; 
+  }
+  for(var i = 0; i < objs.length; i++){
+    var o = objs[i];
+    
+    var cn = "box" + new Date().getTime();
+    markup += "<div id='aBox' data-id='"+i+"'>"+
+    "<input class='name' onchange='updateName(event)'>" +
+    "<input class='label' onchange='updateLabel(event)'>"+
+    "<button onclick='deleteBox(event)'>Delete</button>"+
+    "</div>";
+    $("." + cn+ " .name").val(o.name || "Untitled")
+    $("." + cn+ " .label").val(o.label || "no label")
+  }
+
+
+  document.getElementById("boxesList").innerHTML = markup;
+}
+
+
+function refreshBoxData()
+{
+  $(".ccpta.base64Clip").val(getXMLAnnots())
+  $(".ccpta.cssClip").val(JSON.stringify(getJSONAnnots()));
+  setBoxHTML();
+}
+
+function deleteBox(e)
+{
+  var boxid = e.target.parentElement.dataset.id;
+  console.log(boxid)
+  canvas.remove(canvas.getObjects()[boxid])
+  $(".ccpta.base64Clip").val(getXMLAnnots())
+  $(".ccpta.cssClip").val(JSON.stringify(getJSONAnnots()));
+  $(e.target.parentElement).remove();
+}
+
+document.getElementById("canvas-container").tabIndex = 1000;
+document.getElementById("canvas-container").addEventListener("keydown", function(e){
+  console.log(e.keyCode)
+}, false);

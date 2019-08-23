@@ -1,13 +1,34 @@
     <li>
       <div class="collapsible-header"><i class="material-icons">info_outline</i>Basics</div>
       <div class="collapsible-body" style='text-align:center'>
-        <div class="label col s12 textcenter" style="text-align:center;margin-bottom:-30px">Image Dimensions</div>
+        <!--<div class="label col s12 textcenter" style="text-align:center;margin-bottom:-30px">Image Dimensions</div>
         <div class="label col s12 textcenter imageDimensions" style="text-align:center;">X</div>
+        -->
+        <div class="row">
+          <div class="label col s6"> Image Zoom </div>
+          <div class="input-field col s6 halfinput">
+            <input type="number" step=".1" min=".1" max="300" class="form-control text-center inp100 zoom" value="100" id="" onchange="imageDataChange(event)" oninput='updateValueI(event)'>
+            <i class="material-icons prefix">%</i>
+          </div>
+          <input id="" class="zoomSlider" value="100" type="range" min="0.0" max="500" step=".1" oninput ="updateValueS(event)" onchange="imageDataChange(event)">
+      </div><br>
         <a style="" href="javascript:downloadOrig()" class="waves-effect waves-light btn blue"><i class="material-icons left">arrow_downward</i>Download Original</a>
         <a style="" href="javascript:cropAndRotate()" class="waves-effect waves-light btn blue"><i class="material-icons left">crop_rotate</i>Crop and Rotate</a>
       </div>
     </li>
+      
     <li>
+        <div class="collapsible-header"><i class="material-icons">aspect_ratio</i>Bounding Box Tools</div>
+        <div class="collapsible-body" style='text-align:center'>
+          <div id='boxesList'></div>
+        </div>
+
+    </li>
+
+
+    
+
+    <!--  <li>
       <div class="collapsible-header"><i class="material-icons">crop</i>Dimensions</div>
       <div class="collapsible-body" style='text-align:center'>
                     <select class="theSelect selectInput" onchange="selectChanged(event)">
@@ -108,7 +129,9 @@
           </div>
       </div>
     </li>
+  
     <li>
+    
       <div class="collapsible-header"><i class="material-icons">aspect_ratio</i>Position</div>
       <div class="collapsible-body" style='text-align:center'>
         <div class="row">
@@ -165,7 +188,7 @@
             <div class="label col s6"> Type </div>
             <div class="input-field col s6 halfinput">
                     <select style='font-size:20px;' id="gradType" class="selectInput" style="" onchange="imageDataChange(event)">
-                        <!-- <option value="0"> Radial </option> -->
+                         <option value="0"> Radial </option> 
                         <option value="1"> Vertical </option>
                         <option value="2"> Horizontal </option>
                     </select>
@@ -283,15 +306,16 @@
 
       </div>
     </li>
+  -->
     <li>
-      <div class="collapsible-header"><i class="material-icons">file_download</i>Download/base64</div>
+      <div class="collapsible-header"><i class="material-icons">file_download</i>Download</div>
       <div class="collapsible-body" style='text-align:center'>
-        <a style='margin-bottom:30px;' class="waves-effect waves-light btn red"><i class="material-icons left">cloud_download</i>Current Image</a>
+        <a style='margin-bottom:30px;' class="waves-effect waves-light btn red"><i class="material-icons left">cloud_download</i>Annotated Image</a>
 
-            <div class="label col s12 textcenter" style='margin-bottom:-10px;text-align:center;'> BASE64</div>
+            <div class="label col s12 textcenter" style='margin-bottom:-10px;text-align:center;'> XML Annotations</div>
               <textarea readonly=true onclick='base64DW(event)' class='ccpta base64Clip' id=''> </textarea>
         <a style='margin-bottom:30px;display:none' class="waves-effect waves-light btn blue"><i class="material-icons left">content_copy</i>Copy Base64</a>
-            <div class="label col s12 textcenter" style='margin-bottom:-10px;text-align:center;'> CSS </div>
+            <div class="label col s12 textcenter" style='margin-bottom:-10px;text-align:center;'> JSON Annotations </div>
               <textarea readonly=true onclick='cssDW(event)' class='ccpta cssClip' id=''> </textarea>
         <a style='display:none' class="waves-effect waves-light btn blue"><i class="material-icons left">content_copy</i>Copy CSS</a>
       </div>
