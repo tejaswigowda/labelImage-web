@@ -59,8 +59,27 @@ function loadImage()
   }
 })
 
-/*
   canvas.on('object:moving', function (e) {
+        var obj = e.target;
+        var zoom = canvas.getZoom();
+         // if object is too big ignore
+        if(obj.currentHeight > obj.canvas.height*zoom || obj.currentWidth > obj.canvas.width*zoom){
+            return;
+        }
+        obj.setCoords();
+        // top-left  corner
+        if(obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0){
+            obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect().top);
+            obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect().left);
+        }
+        // bot-right corner
+        if(obj.getBoundingRect().top+obj.getBoundingRect().height  > obj.canvas.height*zoom || obj.getBoundingRect().left+obj.getBoundingRect().width  > obj.canvas.width*zoom){
+            obj.top = Math.min(obj.top, obj.canvas.height*zoom-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top);
+            obj.left = Math.min(obj.left, obj.canvas.width*zoom-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left);
+        }
+});
+
+  canvas.on('object:scaling', function (e) {
         var obj = e.target;
          // if object is too big ignore
         if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
@@ -78,7 +97,6 @@ function loadImage()
             obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left);
         }
 });
-*/
 
             canvas.on('mouse:wheel', function(opt) {
 
@@ -339,9 +357,11 @@ function deleteBox(e)
   var boxid = e.target.parentElement.dataset.id;
   console.log(boxid)
   canvas.remove(canvas.getObjects()[boxid])
-  $(".ccpta.base64Clip").val(getXMLAnnots())
+ /* $(".ccpta.base64Clip").val(getXMLAnnots())
   $(".ccpta.cssClip").val(JSON.stringify(getJSONAnnots()));
   $(e.target.parentElement).remove();
+ */
+  refreshBoxData();
 }
 
 document.getElementById("canvas-container").tabIndex = 1000;
