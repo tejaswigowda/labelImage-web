@@ -10,6 +10,7 @@ var start = function()
   loadImage();
 }
 
+var theImage = {};
 var inst, canvas;
 var rect, isDown, origX, origY;
 function loadImage()
@@ -27,14 +28,24 @@ function loadImage()
             // c.height = img.height;
 
 
+            theImage.width = img.width;
+            theImage.height = img.height;
+            theImage.data = data;
              canvas = new fabric.Canvas('imageC', { selection: true, hasControls:true, width:img.width, height:img.height});
-             fabric.Image.fromURL(data, function(oImg) {
+             /*
+            theImage.obj = new fabric.Image.fromURL(data, function(oImg) {
               canvas.add(oImg);
               oImg.set('selectable', false);
               oImg.set('hasBorders', false);
               oImg.set('hasControls', false);
               oImg.set('lockMovementX', true);
               });
+             */
+
+            canvas.setBackgroundImage(
+              data,
+             canvas.renderAll.bind(canvas)
+            );
 
   
 
@@ -44,10 +55,14 @@ function loadImage()
                 
               var delta = opt.e.deltaY;
               var zoom = canvas.getZoom();
+              console.log(zoom);
               zoom = zoom + delta/200;
               if (zoom > 2) zoom = 2;
               if (zoom < 0.05) zoom = 0.05;
               canvas.setZoom(zoom);
+              canvas.setWidth(theImage.width* zoom);
+              canvas.setHeight(theImage.height* zoom);
+             // canvas.renderAll();
               opt.e.preventDefault();
               opt.e.stopPropagation();
             });
@@ -78,7 +93,6 @@ function loadImage()
               if (!isDown) return;
               var pointer = canvas.getPointer(o.e);
 
-//$("#imageC .upper-canvas").css({cursor:"pointer"});
               if(origX>pointer.x){
                   rect.set({ left: Math.abs(pointer.x) });
               }
