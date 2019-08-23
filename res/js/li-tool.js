@@ -1,7 +1,3 @@
-var theImage= {
-  url:null
-}
-
 var start = function()
 {
   activityIndicator.show(); // show spinner
@@ -11,6 +7,12 @@ var start = function()
 }
 
 var theImage = {};
+var theBoxes = {
+  list: [],
+  update: function(){
+  }
+}
+
 var inst, canvas;
 var rect, isDown, origX, origY;
 function loadImage()
@@ -28,6 +30,7 @@ function loadImage()
             // c.height = img.height;
 
 
+            theImage.path = url;
             theImage.width = img.width;
             theImage.height = img.height;
             theImage.data = data;
@@ -48,6 +51,34 @@ function loadImage()
             );
 
   
+            canvas.on('selection:created', (e) => {
+  if(e.target.type === 'activeSelection') {
+    canvas.discardActiveObject();
+  } else {
+    //do nothing
+  }
+})
+
+/*
+  canvas.on('object:moving', function (e) {
+        var obj = e.target;
+         // if object is too big ignore
+        if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
+            return;
+        }
+        obj.setCoords();
+        // top-left  corner
+        if(obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0){
+            obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect().top);
+            obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect().left);
+        }
+        // bot-right corner
+        if(obj.getBoundingRect().top+obj.getBoundingRect().height  > obj.canvas.height || obj.getBoundingRect().left+obj.getBoundingRect().width  > obj.canvas.width){
+            obj.top = Math.min(obj.top, obj.canvas.height-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top);
+            obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left);
+        }
+});
+*/
 
             canvas.on('mouse:wheel', function(opt) {
 
@@ -55,9 +86,8 @@ function loadImage()
                 
               var delta = opt.e.deltaY;
               var zoom = canvas.getZoom();
-              console.log(zoom);
               zoom = zoom + delta/200;
-              if (zoom > 2) zoom = 2;
+              if (zoom > 5) zoom = 5;
               if (zoom < 0.05) zoom = 0.05;
               canvas.setZoom(zoom);
               canvas.setWidth(theImage.width* zoom);
@@ -81,8 +111,9 @@ function loadImage()
                   originY: 'top',
                   width: pointer.x-origX,
                   height: pointer.y-origY,
+                  lockRotation: true,
                   angle: 0,
-                  fill: 'rgba(255,0,0,0.2)',
+                  fill: 'rgba(255,0,0,0.4)',
                   transparentCorners: false,
                   hasRotatingPoint: false
               });
@@ -102,7 +133,6 @@ function loadImage()
 
               rect.set({ width: Math.abs(origX - pointer.x) });
               rect.set({ height: Math.abs(origY - pointer.y) });
-              console.log(pointer);
 
               canvas.renderAll();
           });
@@ -231,3 +261,38 @@ function imageDataChange(e)
 
 }
 
+
+function getJSONAnnots()
+{
+  var annotation = {
+    filename : theImage.path,
+    path : theImage.path,
+    object : []
+  };
+  var objs = canvas.getObjects();
+  for(var i = 0; i < objs.length; i++){
+    var o = objs[i];
+    var objObj = {
+      name : "",
+      pose : undefined,
+      truncated: 1,
+      difficult: 0,
+      bndbox:{
+        xmin: o.left,
+        ymin: o.top,
+        xmax: o.left + o.width,
+        ymax: o.top + o.height
+      }
+    }
+    annotation.object.push(objObj);
+  }
+
+  return {annotation:annotation};
+}
+
+function getXMLAnnots()
+{
+  var x2js = new X2JS();
+  var jsonObj = getJSONAnnots();
+  return  x2js.json2xml_str( jsonObj );
+}
