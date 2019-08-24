@@ -194,8 +194,8 @@ canvas.on('selection:updated', function (e) {
                 }
                 isDown = false;
               }
+            refreshBoxData();
           });
-          refreshBoxData();
         }
         img.src = data;
 
@@ -365,8 +365,7 @@ function setBoxHTML()
     
     var cn = "box" + i + new Date().getTime();
     markup += "<div id='aBox' class='"+ cn +"' data-cn='"+ cn +"' data-id='"+i+"'>"+
-    "<input class='name' onchange='updateName(event)'>" +
-    "<input class='label' onchange='updateLabel(event)'>"+
+    "<input class='name col8' onchange='updateName(event)'>" +
     "<button onclick='deleteBox(event)'>Delete</button>"+
     "</div>";
     $("." + cn+ " .name").val(o.name || "Untitled")
