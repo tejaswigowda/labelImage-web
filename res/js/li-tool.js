@@ -413,13 +413,9 @@ function boxSelect(e)
 
   
   //$(".input.name.col8").val(getJSONAnnots());
-  canvas.on({
-    'object:selected': selectedObject
-});
+ 
 
-function selectedObject(e) {
-    var id = canvas.getObjects()[boxid];
-}
+
 
   
   canvas.setActiveObject(canvas.getObjects()[boxid]);
