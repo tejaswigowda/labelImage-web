@@ -364,12 +364,17 @@ function setBoxHTML()
     var o = objs[i];
     
     var cn = "box" + i + new Date().getTime();
-    markup += "<div id='aBox' class='"+ cn +"' data-cn='"+ cn +"' data-id='"+i+"'>"+
-    "<input class='name col8' onchange='updateName(event)'>" +
+    markup += "<div id='aBox' class='"+ cn +"' data-cn='"+ cn +"' data-id='"+i+"'> "+
+    "<input class='name col8' onchange='updateName(event)' onclick= 'boxSelect(event)'>" +
     "<button onclick='deleteBox(event)'>Delete</button>"+
     "</div>";
     $("." + cn+ " .name").val(o.name || "Untitled")
     $("." + cn+ " .label").val(o.label || "no label")
+
+
+
+
+
   }
 
 
@@ -389,13 +394,42 @@ function deleteBox(e)
 {
   var boxid = e.target.parentElement.dataset.id;
   var cn = e.target.parentElement.dataset.cn;
-
+  
   canvas.remove(canvas.getObjects()[boxid])
   $(".ccpta.base64Clip").val(getXMLAnnots())
   $(".ccpta.cssClip").val(JSON.stringify(getJSONAnnots()));
   $("#boxesList ." + cn).remove();
   if (canvas.getObjects().length == 0) refreshBoxData();
+  
 }
 
 //document.getElementById("imageWrapper").tabIndex = 1000;
 
+function boxSelect(e)
+{
+  var boxid = e.target.parentElement.dataset.id;
+  var cn = e.target.parentElement.dataset.cn;
+  console.log(boxid);
+
+  
+  //$(".input.name.col8").val(getJSONAnnots());
+  canvas.on({
+    'object:selected': selectedObject
+});
+
+function selectedObject(e) {
+    var id = canvas.getObjects()[boxid];
+}
+
+  
+  canvas.setActiveObject(canvas.getObjects()[boxid]);
+  canvas.renderAll();
+  refreshBoxData();
+  
+  return;
+
+
+  
+  
+
+}
