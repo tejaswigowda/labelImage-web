@@ -365,7 +365,7 @@ function setBoxHTML()
     
     var cn = "box" + i + new Date().getTime();
     markup += "<div id='aBox' class='"+ cn +"' data-cn='"+ cn +"' data-id='"+i+"'> "+
-    "<input class='name col8' onchange='updateName(event)' onclick= 'boxSelect(event)'>" +
+    "<input id ='test'  class='name col8' onchange='updateName(event)' ondblclick= 'boxSelect(event)'>" +
     "<button onclick='deleteBox(event)'>Delete</button>"+
     "</div>";
     $("." + cn+ " .name").val(o.name || "Untitled")
@@ -410,16 +410,14 @@ function boxSelect(e)
   var boxid = e.target.parentElement.dataset.id;
   var cn = e.target.parentElement.dataset.cn;
   console.log(boxid);
-
-  
-  //$(".input.name.col8").val(getJSONAnnots());
+  //var text1= getElementById("test");
+  //var sub= text1.innerHTML;
  
-
-
-
   
   canvas.setActiveObject(canvas.getObjects()[boxid]);
   canvas.renderAll();
+  
+  
   refreshBoxData();
   
   return;
@@ -429,3 +427,4 @@ function boxSelect(e)
   
 
 }
+ 
