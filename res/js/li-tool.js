@@ -391,10 +391,10 @@ function deleteBox(e)
   var cn = e.target.parentElement.dataset.cn;
 
   canvas.remove(canvas.getObjects()[boxid])
-  $(".ccpta.base64Clip").val(getXMLAnnots())
+  /*$(".ccpta.base64Clip").val(getXMLAnnots())
   $(".ccpta.cssClip").val(JSON.stringify(getJSONAnnots()));
   $("#boxesList ." + cn).remove();
-  if (canvas.getObjects().length == 0) refreshBoxData();
+  if (canvas.getObjects().length == 0) */refreshBoxData();
 }
 
 //document.getElementById("imageWrapper").tabIndex = 1000;
