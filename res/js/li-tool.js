@@ -1,3 +1,4 @@
+var inspFocus = false;
 var start = function()
 {
   activityIndicator.show(); // show spinner
@@ -5,6 +6,7 @@ var start = function()
   loadInsp();
   loadImage();
   window.addEventListener('keydown', function (e) {
+    if(inspFocus) return;
     var kp = e.ctrlKey || e.keyCode;
     if(kp == 8 || kp == 46){
       canvas.remove(canvas.getActiveObject());
@@ -25,11 +27,25 @@ var theBoxes = {
   }
 }
 
+var intAnnot ;
+function loadAnnots()
+{
+  loadFile(theImage.annots, function(data){
+    var x2js = new X2JS();
+    alert(data)
+    intAnnot =  x2js.xml_str2json(data);
+    alert(intAnnot)
+  });
+
+}
+
 var inst, canvas;
 var rect, isDown, origX, origY;
 function loadImage()
 {
-    var url = window.location.hash.replace("#","");
+    var x = window.location.hash.replace("#","").split(",");
+    var url = x[0];
+    var annots = x[1] || null;
     convertImgToDataURLviaCanvas(url, function(data){
      // document.getElementById("imagePreview").onload = __start;
  //     document.getElementById("imagePreview").src = data;
@@ -42,6 +58,7 @@ function loadImage()
             // c.height = img.height;
 
 
+            theImage.annots = annots;
             theImage.path = url;
             theImage.width = img.width;
             theImage.height = img.height;
@@ -62,6 +79,7 @@ function loadImage()
              canvas.renderAll.bind(canvas)
             );
 
+            if(annots){ loadAnnots() }
   
             canvas.on('selection:created', (e) => {
   if(e.target.type === 'activeSelection') {
@@ -160,7 +178,8 @@ canvas.on('selection:updated', function (e) {
                   angle: 0,
                   fill: 'rgba(255,0,0,0.4)',
                   transparentCorners: false,
-                  hasRotatingPoint: false
+                  hasRotatingPoint: false,
+                  id: md5(theImage.path + new Date().getTime())
               });
               canvas.add(rect);
           });
@@ -326,7 +345,8 @@ function getJSONAnnots()
   for(var i = 0; i < objs.length; i++){
     var o = objs[i];
     var objObj = {
-      name : "",
+      id: o.id,
+      name : o.name || "",
       pose : undefined,
       truncated: 1,
       difficult: 0,
@@ -363,9 +383,9 @@ function setBoxHTML()
   for(var i = 0; i < objs.length; i++){
     var o = objs[i];
     
-    var cn = "box" + i + new Date().getTime();
-    markup += "<div id='aBox' class='"+ cn +"' data-cn='"+ cn +"' data-id='"+i+"'> "+
-    "<input id ='test'  class='name col8' onchange='updateName(event)' ondblclick= 'boxSelect(event)'>" +
+    var cn = "box" + i + new Date().getTime() + " " + o.id;
+    markup += "<div id='aBox' class='"+ cn +"' data-cn='"+ cn +"' data-id='"+o.id+"'> "+
+    "<input id ='test'  class='name col8' onInput='updateName(event)' onblur='boxUnSelect(event)' onfocus='boxSelect(event)'>" +
     "<button onclick='deleteBox(event)'>Delete</button>"+
     "</div>";
     $("." + cn+ " .name").val(o.name || "Untitled")
@@ -408,6 +428,7 @@ function deleteBox(e)
 
 function boxSelect(e)
 {
+  inspFocus = true;
   var boxid = e.target.parentElement.dataset.id;
   var cn = e.target.parentElement.dataset.cn;
   console.log(boxid);
@@ -419,7 +440,7 @@ function boxSelect(e)
   canvas.renderAll();
   
   
-  refreshBoxData();
+ // refreshBoxData();
   
   return;
 
@@ -429,3 +450,14 @@ function boxSelect(e)
 
 }
  
+function boxUnSelect(e)
+{
+  inspFocus = false;
+}
+ 
+function updateName(e)
+{
+  var text = e.target.value;
+  var boxid = e.target.parentElement.dataset.id;
+  canvas.getObjects()[boxid].name = text;
+}
