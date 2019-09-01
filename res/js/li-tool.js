@@ -175,6 +175,8 @@ canvas.on('selection:updated', function (e) {
                   width: pointer.x-origX,
                   height: pointer.y-origY,
                   lockRotation: true,
+                  lockScalingX: false,
+                  lockScalingY: false,
                   angle: 0,
                   fill: 'rgba(255,0,0,0.4)',
                   transparentCorners: false,
@@ -337,8 +339,8 @@ function imageDataChange(e)
 function getJSONAnnots()
 {
   var annotation = {
-    filename : theImage.path,
-    path : theImage.path,
+    filename : encodeURIComponent(theImage.path),
+    path : encodeURIComponent(theImage.path),
     object : []
   };
   var objs = canvas.getObjects();
@@ -426,6 +428,16 @@ function deleteBox(e)
 
 //document.getElementById("imageWrapper").tabIndex = 1000;
 
+function getCanvasObjectById(id)
+{
+  var list = canvas.getObjects();
+  for(var i = 0; i < list.length; i++){
+    if(list[i].id && list[i].id === id){
+      return list[i];
+    }
+  }
+  return null;
+}
 function boxSelect(e)
 {
   inspFocus = true;
@@ -436,7 +448,7 @@ function boxSelect(e)
   //var sub= text1.innerHTML;
  
   
-  canvas.setActiveObject(canvas.getObjects()[boxid]);
+  canvas.setActiveObject(getCanvasObjectById(boxid));
   canvas.renderAll();
   
   
