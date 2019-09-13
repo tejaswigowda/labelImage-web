@@ -417,7 +417,9 @@ function deleteBox(e)
   var boxid = e.target.parentElement.dataset.id;
   var cn = e.target.parentElement.dataset.cn;
   
-  canvas.remove(canvas.getObjects()[boxid])
+  canvas.remove(getCanvasObjectById(boxid))
+  canvas.renderAll();
+  refreshBoxData();
   /*
   $(".ccpta.base64Clip").val(getXMLAnnots())
   $(".ccpta.cssClip").val(JSON.stringify(getJSONAnnots()));
