@@ -1,6 +1,5 @@
 var inspFocus = false;
 var text = "<object><id>f8c50810e2e6d8a6d472a5f225abbc4e</id><name></name><pose/><truncated>1</truncated><difficult>0</difficult><bndbox><xmin>509.6153846153843</xmin><ymin>204.80769230769218</ymin><xmax>631.7307692307688</xmax><ymax>358.6538461538459</ymax></bndbox></object>";
-
 var start = function()
 {
   activityIndicator.show(); // show spinner
@@ -33,10 +32,12 @@ var intAnnot ;
 function loadAnnots()
 {
   loadFile(theImage.annots, function(data){
-    var x2js = new X2JS();
+    test_xml(data);   
+    return;
+   /* var x2js = new X2JS();
     alert(data)
     intAnnot =  x2js.xml_str2json(data);
-    alert(intAnnot)
+    alert(intAnnot)*/
   });
 
 }
@@ -81,7 +82,7 @@ function loadImage()
              canvas.renderAll.bind(canvas)
             );
 
-            if(annots){ loadAnnots() }
+            if(annots){ loadAnnots() ;}
   
             canvas.on('selection:created', (e) => {
   if(e.target.type === 'activeSelection') {
@@ -188,7 +189,7 @@ canvas.on('selection:updated', function (e) {
                   id: md5(theImage.path + new Date().getTime())
               });
               canvas.add(rect); 
-              test_xml(text);
+              //test_xml(text);
           }); 
 
           canvas.on('mouse:move', function(o){
@@ -226,19 +227,8 @@ canvas.on('selection:updated', function (e) {
         img.src = data;
 
       activityIndicator.hide();
-      /*
-      inst = panzoom(document.getElementById("imagePreview"), {
-          maxZoom: 10,
-          minZoom: 0.1,
-          smoothScroll: true,
-          beforeWheel: function(e) {
-            // allow wheel-zoom only if altKey is down. Otherwise - ignore
-           // return false;
-            var shouldIgnore = !e.shiftKey;
-            return shouldIgnore;
-          }
-        });
-       */
+
+    
     });
 }
 
@@ -262,7 +252,7 @@ function convertImgToDataURLviaCanvas(url, callback){
     var img = new Image();
     img.crossOrigin = 'Anonymous';
     img.onload = function(){
-        var canvas = document.createElement('CANVAS');
+       canvas = document.createElement('CANVAS');
         var ctx = canvas.getContext('2d');
         var dataURL;
         canvas.height = this.height;
@@ -480,13 +470,15 @@ var text = "<object><id>f8c50810e2e6d8a6d472a5f225abbc4e</id><name></name><pose/
 
 function test_xml(text){
      var parser = new DOMParser();
-     var test = parser.parseFromString(text,"text/xml");
+     var test =  parser.parseFromString(text,"text/xml");
+     var nodes = test.getElementsByTagName("object")[0].childNodes;
+for(var i =0; i < nodes.length; i++){
      var newAnnot = {
-         annot_id : test.getElementsByTagName("id")[0].childNodes[0].nodeValue,
-         annot_xmin: parseFloat(test.getElementsByTagName("xmin")[0].childNodes[0].nodeValue),
-         annot_xmax: parseFloat(test.getElementsByTagName("xmax")[0].childNodes[0].nodeValue),
-         annot_ymin:parseFloat(test.getElementsByTagName("ymin")[0].childNodes[0].nodeValue),
-         annot_ymax:parseFloat(test.getElementsByTagName("ymax")[0].childNodes[0].nodeValue)
+         annot_id : test.getElementsByTagName("object")[0].childNodes[i].nodeValue,
+         annot_xmin: parseFloat(test.getElementsByTagName("xmin")[i].childNodes[0].nodeValue),
+         annot_xmax: parseFloat(test.getElementsByTagName("xmax")[i].childNodes[0].nodeValue),
+         annot_ymin:parseFloat(test.getElementsByTagName("ymin")[i].childNodes[0].nodeValue),
+         annot_ymax:parseFloat(test.getElementsByTagName("ymax")[i].childNodes[0].nodeValue)
   
      }
      console.log( typeof newAnnot.annot_xmin);
@@ -512,11 +504,15 @@ function test_xml(text){
       hasRotatingPoint: false,
       id: md5(theImage.path + new Date().getTime())
   });
+
   canvas.add(rect);
-  canvas.renderAll;
+  refreshBoxData()
+}
+  canvas.requestRenderAll();
+ // setTimeout("refreshBoxData()",1000);
  
 
-     
+    
     }
   
 
