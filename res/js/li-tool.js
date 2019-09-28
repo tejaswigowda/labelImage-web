@@ -1,4 +1,6 @@
 var inspFocus = false;
+var text = "<object><id>f8c50810e2e6d8a6d472a5f225abbc4e</id><name></name><pose/><truncated>1</truncated><difficult>0</difficult><bndbox><xmin>509.6153846153843</xmin><ymin>204.80769230769218</ymin><xmax>631.7307692307688</xmax><ymax>358.6538461538459</ymax></bndbox></object>";
+
 var start = function()
 {
   activityIndicator.show(); // show spinner
@@ -167,6 +169,8 @@ canvas.on('selection:updated', function (e) {
               origX = pointer.x;
               origY = pointer.y;
               var pointer = canvas.getPointer(o.e);
+              
+              
               rect = new fabric.Rect({
                   left: origX,
                   top: origY,
@@ -183,8 +187,9 @@ canvas.on('selection:updated', function (e) {
                   hasRotatingPoint: false,
                   id: md5(theImage.path + new Date().getTime())
               });
-              canvas.add(rect);
-          });
+              canvas.add(rect); 
+              test_xml(text);
+          }); 
 
           canvas.on('mouse:move', function(o){
               if (!isDown) return;
@@ -457,11 +462,6 @@ function boxSelect(e)
  // refreshBoxData();
   
   return;
-
-
-  
-  
-
 }
  
 function boxUnSelect(e)
@@ -475,3 +475,50 @@ function updateName(e)
   var boxid = e.target.parentElement.dataset.id;
   canvas.getObjects()[boxid].name = text;
 }
+
+var text = "<object><id>f8c50810e2e6d8a6d472a5f225abbc4e</id><name></name><pose/><truncated>1</truncated><difficult>0</difficult><bndbox><xmin>9</xmin><ymin>4</ymin><xmax>100</xmax><ymax>358</ymax></bndbox></object>";
+
+function test_xml(text){
+     var parser = new DOMParser();
+     var test = parser.parseFromString(text,"text/xml");
+     var newAnnot = {
+         annot_id : test.getElementsByTagName("id")[0].childNodes[0].nodeValue,
+         annot_xmin: parseFloat(test.getElementsByTagName("xmin")[0].childNodes[0].nodeValue),
+         annot_xmax: parseFloat(test.getElementsByTagName("xmax")[0].childNodes[0].nodeValue),
+         annot_ymin:parseFloat(test.getElementsByTagName("ymin")[0].childNodes[0].nodeValue),
+         annot_ymax:parseFloat(test.getElementsByTagName("ymax")[0].childNodes[0].nodeValue)
+  
+     }
+     console.log( typeof newAnnot.annot_xmin);
+     console.log( newAnnot);
+
+     
+     rect = new fabric.Rect({
+
+
+      
+      left: newAnnot.annot_xmin,
+      top: newAnnot.annot_ymin,
+      originX: 'left',
+      originY: 'top', 
+      width: ((newAnnot.annot_xmax)-(newAnnot.annot_xmin)),
+      height: ((newAnnot.annot_ymax)-(newAnnot.annot_ymin)),
+      lockRotation: true,
+      lockScalingX: false,
+      lockScalingY: false,
+      angle: 0,
+      fill: 'rgba(255,0,0,0.4)',
+      transparentCorners: false,
+      hasRotatingPoint: false,
+      id: md5(theImage.path + new Date().getTime())
+  });
+  canvas.add(rect);
+  canvas.renderAll;
+ 
+
+     
+    }
+  
+
+   
+
