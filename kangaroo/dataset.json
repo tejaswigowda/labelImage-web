@@ -1,3 +1,12 @@
 {
-
+  name:"",
+  id:"",
+  training:[
+    ['https://github.com/tejaswigowda/labelImage-web/raw/master/kangaroo/images/00001.jpg', 'https://github.com/tejaswigowda/labelImage-web/raw/master/kangaroo/annots/00001.xml']
+    ['https://github.com/tejaswigowda/labelImage-web/raw/master/kangaroo/images/00002.jpg', 'https://github.com/tejaswigowda/labelImage-web/raw/master/kangaroo/annots/00002.xml']
+  
+  ],
+  test:[
+  
+  ]
 }
